@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import Rand from 'rand-seed';
 import { fileHandler, fileWriter } from "./src/fileHandler";
 import { User } from "./src/types";
@@ -7,7 +8,7 @@ import { getCoordinates } from "./src/coordinates";
 const app = express();
 
 app.use(express.json())
-
+app.use(cors())
 const PORT = 3000;
 
 function setHeaders(res : express.Response) {

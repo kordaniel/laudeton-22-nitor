@@ -1,0 +1,11 @@
+POST http://localhost:3000/activities
+Content-Type: application/json
+
+
+{
+  "name": "Jeeeeppp",
+  "coordinates": {
+    "lat": 66.16999,
+    "long": 29.17088
+  }
+}

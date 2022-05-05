@@ -14,5 +14,45 @@
       "lat": 66.16988654330092,
       "long": 29.170672500752087
     }
+  },
+  {
+    "id": "A3",
+    "name": "Mitä",
+    "coordinates": {
+      "lat": 66.16999,
+      "long": 29.17088
+    }
+  },
+  {
+    "id": "A4",
+    "name": "No nyt",
+    "coordinates": {
+      "lat": 66.16999,
+      "long": 29.17088
+    }
+  },
+  {
+    "id": "I4",
+    "name": "No nyssssst",
+    "coordinates": {
+      "lat": 66.16999,
+      "long": 29.17088
+    }
+  },
+  {
+    "id": "V6",
+    "name": "No nyssssst",
+    "coordinates": {
+      "lat": 66.16999,
+      "long": 29.17088
+    }
+  },
+  {
+    "id": "R9",
+    "name": "Jeeeeppp",
+    "coordinates": {
+      "lat": 66.16999,
+      "long": 29.17088
+    }
   }
 ]
