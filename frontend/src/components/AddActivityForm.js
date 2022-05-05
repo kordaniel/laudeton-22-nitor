@@ -14,7 +14,10 @@ const AddActivityForm = ({ coordinates, close }) => {
         event.preventDefault();
         const activity = {
             name: name,
-            coordinates: coordinates
+            coordinates: {
+                lat: coordinates[1],
+                long: coordinates[0]
+            }
         }
         activitiesService.addActivity(activity);
         close();

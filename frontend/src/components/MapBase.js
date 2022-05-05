@@ -8,7 +8,7 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import activitiesService from "../services/activitiesService";
 import {Point} from "ol/geom";
-import {fromLonLat} from "ol/proj";
+import {fromLonLat, transform} from "ol/proj";
 import AddActivityForm from "./AddActivityForm";
 
 const MapBase = () => {
@@ -48,7 +48,7 @@ const MapBase = () => {
             target: mapElement.current,
             view: new View({
                 center: [3617200, 4951081],
-                zoom: 5,
+                zoom: 5
             }),
             overlays: [overlay],
             layers: [
@@ -60,14 +60,14 @@ const MapBase = () => {
         });
         initialMap.on('click', handleMapClick)
         setMap(initialMap)
-        console.log(initialMap)
         overlay.setElement(overlayElement.current)
     }, []);
 
     const handleMapClick = (event) => {
         const clickedCoord = mapRef.current.getCoordinateFromPixel(event.pixel);
+        const coord = transform(clickedCoord,  'EPSG:3857', "EPSG:4326")
         overlay.setPosition(clickedCoord)
-        setSelectedCoord(clickedCoord);
+        setSelectedCoord(coord);
     }
 
     const closeOverlay = () => {
