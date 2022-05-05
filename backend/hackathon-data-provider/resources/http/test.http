@@ -1,0 +1,22 @@
+GET http://localhost:3000/me
+seed: foo
+
+###
+
+GET http://localhost:3000/users
+
+###
+
+GET http://localhost:3000/activities
+
+###
+
+GET http://localhost:3000/fromFlights
+
+###
+
+GET http://localhost:3000/toFlights
+
+###
+
+GET http://localhost:3000/coordinates

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "A1",
+    "name": "Visit to Reindeer Farm",
+    "coordinates": {
+      "lat": 66.16944885418808,
+      "long": 29.155163414833567
+    }
+  },
+  {
+    "id": "A2",
+    "name": "Snowmobile Safari",
+    "coordinates": {
+      "lat": 66.16988654330092,
+      "long": 29.170672500752087
+    }
+  }
+]

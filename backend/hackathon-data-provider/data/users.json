@@ -1,0 +1,20 @@
+[
+  {
+    "id": "U1",
+    "name": "Matti Meikäläinen",
+    "email": "matti.meikalainen@nitor.com",
+    "fromFlightId": "F3",
+    "toFlightId": "F1",
+    "imageUrl": "www.foo.jpg",
+    "activityId": "A1"
+  },
+  {
+    "id": "U6",
+    "name": "Mette Backman",
+    "email": "mette.backman@nitor.com",
+    "fromFlightId": "F3",
+    "toFlightId": "F1",
+    "imageUrl": "www.foo.jpg",
+    "activityId": "A1"
+  }
+]
