@@ -21,7 +21,7 @@ const ActivityInfo = ({ id }) => {
         </div>
         <div>
             <h4>Closest users:</h4>
-            {activity.userDistances.map(user => (
+            {activity.userDistances.slice(0, 10).map(user => (
                 <div key={user.name}><b>Name:</b> {user.name} <b>Distance:</b> {(user.distance).toFixed(1)}</div>
             ))}
         </div>
