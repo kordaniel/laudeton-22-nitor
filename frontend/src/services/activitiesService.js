@@ -3,7 +3,8 @@ import axios from "axios";
 const apiBaseUrl = "http://localhost:3000";
 
 const addActivity = async (activity) => {
-    await axios.post(`${apiBaseUrl}/activities`, activity);
+    const { data: results } = await axios.post(`${apiBaseUrl}/activities`, activity);
+    return results;
 }
 
 const getActivities = async () => {
@@ -11,6 +12,11 @@ const getActivities = async () => {
     return results;
 }
 
+const getActivity = async (id) => {
+    const { data: results } = await axios.get(`${apiBaseUrl}/activities/${id}`);
+    return results;
+}
+
 export default {
-    addActivity, getActivities
+    addActivity, getActivities, getActivity
 }

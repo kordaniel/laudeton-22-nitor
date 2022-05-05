@@ -5,8 +5,8 @@ const ActivityInfo = ({ id }) => {
     const [ activity, setActivity] = useState(undefined);
 
     useEffect(() => {
-        activitiesService.getActivities().then((activities) => {
-            const activity = activities.find(activity => activity.id === id);
+        if (id == null) return;
+        activitiesService.getActivity(id).then((activity) => {
             setActivity(activity);
         })
     }, [id])
@@ -15,9 +15,17 @@ const ActivityInfo = ({ id }) => {
         return (<div>Loading...</div>)
     }
     return (
+        <>
         <div>
-            {activity.name}
+            <h3>{activity.activityName}</h3>
         </div>
+        <div>
+            <h4>Lähimmät käyttäjät:</h4>
+            {activity.userDistances.map(user => (
+                <div key={user.name}><b>Nimi:</b> {user.name} <b>Etäisyys:</b> {(user.distance).toFixed(1)}</div>
+            ))}
+        </div>
+                </>
     )
 }
 

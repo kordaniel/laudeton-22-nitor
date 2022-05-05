@@ -19,8 +19,10 @@ const AddActivityForm = ({ coordinates, close, addActivityToMap }) => {
                 long: coordinates[0]
             }
         }
-        activitiesService.addActivity(activity);
-        addActivityToMap(activity);
+        activitiesService.addActivity(activity).then(newActivity => {
+            console.log(newActivity)
+            addActivityToMap(newActivity);
+        });
         setName("")
         close();
     }

@@ -14,7 +14,6 @@ import ActivityInfo from "./ActivityInfo";
 import {Stroke, Style} from "ol/style";
 
 const MapBase = () => {
-    const svg = ""
     const [ map, setMap ] = useState()
     const [ activitiesLayer, setActivitiesLayer ] = useState(new VectorLayer({
         source: new VectorSource()
@@ -61,7 +60,6 @@ const MapBase = () => {
             ),
         });
         feature.setId(activity.id);
-        console.log(activity.id)
         activitiesLayer.getSource().addFeature(feature);
         pathLayer.getSource().getFeatures().forEach(feat => feat.getGeometry().appendCoordinate(feature.getGeometry().getCoordinates()));
     }
@@ -94,6 +92,7 @@ const MapBase = () => {
                 activitiesLayer, pathLayer
             ]
         });
+        activitiesLayer.set("name", "activities");
         initialMap.on('click', handleMapClick)
         setMap(initialMap)
         overlay.setElement(overlayElement.current)
@@ -102,7 +101,9 @@ const MapBase = () => {
 
     const handleMapClick = (event) => {
         closeOverlay();
-        const featuresAtPixel = mapRef.current.getFeaturesAtPixel(event.pixel);
+        const featuresAtPixel = mapRef.current.getFeaturesAtPixel(event.pixel, {
+            layerFilter: layer => layer.get("name") === "activities"
+        });
         if (featuresAtPixel.length > 0) {
             const feature = featuresAtPixel[0]
             console.log(feature)
