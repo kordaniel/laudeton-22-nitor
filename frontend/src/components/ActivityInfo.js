@@ -20,9 +20,9 @@ const ActivityInfo = ({ id }) => {
             <h3>{activity.activityName}</h3>
         </div>
         <div>
-            <h4>Lähimmät käyttäjät:</h4>
+            <h4>Closest users:</h4>
             {activity.userDistances.map(user => (
-                <div key={user.name}><b>Nimi:</b> {user.name} <b>Etäisyys:</b> {(user.distance).toFixed(1)}</div>
+                <div key={user.name}><b>Name:</b> {user.name} <b>Distance:</b> {(user.distance).toFixed(1)}</div>
             ))}
         </div>
                 </>
