@@ -36,6 +36,34 @@ function generateId(objects) {
     return newId;
 }
 
+function getDistance(coordsA, coordsB) {
+    const distLat = coordsA.lat  - coordsB.lat;
+    const distLon = coordsA.long - coordsB.long;
+
+    return Math.sqrt( (distLat * distLat) + (distLon * distLon) );
+}
+
+function getClosestUser(user, allUsers) {
+    let closestUserId = '';
+    let distance = -1;
+    let closest = null;
+    allUsers.filter(u => u.userId != user.userId).forEach(u => {
+        const distancePair = getDistance(user.coordinates, u.coordinates);
+
+        if (distance === -1) {
+            closestUserId = u.userId;
+            distance = distancePair;
+            closest = u;
+        } else if (distancePair < distance) {
+            closestUserId = u.userId;
+            distance = distancePair;
+            closest = u;
+        }
+    });
+
+    return closest;
+}
+
 app.get('/me',  async (req, res) => {
     const json = await fileHandler("./data/users.json")
     setHeaders(res)
@@ -87,6 +115,22 @@ app.get('/robots.txt',  async (req, res) => {
     res.send('User-agent: *\nDisallow: /')
 })
 
+app.get('/nearest/:uid', async (req, res) => {
+    const usersJson = await fileHandler("./data/users.json");
+    const usersInfo = JSON.parse(usersJson).map(u => ({ userId: u.id, coordinates: getCoordinates() }));
+    const user = usersInfo.filter(u => u.userId === req.params.uid);
+    if (user.length === 0) {
+        return res.status(400).json({
+            error: "UID not found"
+        });
+    }
+
+    const closestUser = getClosestUser(user[0], usersInfo);
+
+    setHeaders(res)
+    res.send(JSON.stringify(closestUser));
+})
+
 app.post('/activities', async (req, res) => {
     const activities = await fileHandler("./data/activities.json");
     const newId = generateId(activities);
@@ -95,12 +139,12 @@ app.post('/activities', async (req, res) => {
     if (!body.name) {
         return res.status(400).json({
             error: 'Activity name is missing'
-        })
+        });
     }
     if (!body.coordinates) {
         return res.status(400).json({
             error: 'Activity coordinates are missing'
-        })
+        });
     }
 
     const activity = { id: newId, ...body }
