@@ -3,7 +3,7 @@ import activitiesService from "../services/activitiesService";
 import Button from 'react-bootstrap/Button';
 import {Form, InputGroup} from "react-bootstrap";
 
-const AddActivityForm = ({ coordinates, close }) => {
+const AddActivityForm = ({ coordinates, close, addActivityToMap }) => {
     const [ name, setName ] = useState("");
 
     const handleInput = event => {
@@ -20,6 +20,7 @@ const AddActivityForm = ({ coordinates, close }) => {
             }
         }
         activitiesService.addActivity(activity);
+        addActivityToMap(activity);
         close();
     }
 

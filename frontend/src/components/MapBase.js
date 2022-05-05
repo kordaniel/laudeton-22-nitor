@@ -32,17 +32,23 @@ const MapBase = () => {
 
     mapRef.current = map
 
-    useEffect(() => {
+    const addActivityToMap = (activity) => {
+        const feature = new Feature({
+            geometry: new Point(
+                fromLonLat([activity.coordinates.long, activity.coordinates.lat])
+            )
+        });
+        activitiesLayer.getSource().addFeature(feature);
+    }
+
+    const updateActivities = () => {
         activitiesService.getActivities().then((activities) => {
-            activities.forEach(activity => {
-                const feature = new Feature({
-                    geometry: new Point(
-                        fromLonLat([activity.coordinates.long, activity.coordinates.lat])
-                    )
-                });
-                activitiesLayer.getSource().addFeature(feature);
-            });
+            activities.forEach(activity => addActivityToMap(activity));
         })
+    }
+
+    useEffect(() => {
+        updateActivities();
         if (map !== undefined) return;
         const initialMap = new Map({
             target: mapElement.current,
@@ -79,7 +85,7 @@ const MapBase = () => {
             <div ref={mapElement} id="map"></div>
             <div ref={overlayElement} id="popup" className="ol-popup">
                 <a href="#" id="popup-closer" className="ol-popup-closer" onClick={closeOverlay}></a>
-                <div id="popup-content"><AddActivityForm coordinates={selectedCoord} close={closeOverlay}/></div>
+                <div id="popup-content"><AddActivityForm coordinates={selectedCoord} close={closeOverlay} addActivityToMap={addActivityToMap}/></div>
             </div>
         </>
     );
