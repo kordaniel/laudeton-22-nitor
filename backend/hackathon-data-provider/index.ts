@@ -17,6 +17,24 @@ function setHeaders(res : express.Response) {
     res.header("Cache-Control", "private, max-age=0")
 }
 
+function degToRadians(degrees) {
+    return (degrees * Math.PI) / 180.0;
+}
+
+// Returns the distance between two points in kilometers
+function haversine(coordsA, coordsB) {
+    const earthR = 6372.8;
+    const dLat = degToRadians(coordsA.lat - coordsB.lat);
+    const dLon = degToRadians(coordsA.long - coordsB.long);
+    const Alat = degToRadians(coordsA.lat);
+    const Blat = degToRadians(coordsB.lat);
+
+    const a = Math.pow(Math.sin(dLat/2), 2)
+            + Math.cos(Alat) * Math.cos(Blat) * Math.pow(Math.sin(dLon/2), 2);
+    const c = 2 * Math.asin(Math.sqrt(a));
+    return earthR * c;
+}
+
 function generateId(objects) {
     const jsonObjects = JSON.parse(objects)
     const idLetters = 1;
@@ -47,7 +65,7 @@ function getUsersDistances(activity, users) {
     const activityName = activity.name;
     let userDistances = [];
     users.forEach(u => {
-        const distance = getDistance(u.coordinates, activity.coordinates);
+        const distance = haversine(u.coordinates, activity.coordinates);
         userDistances = userDistances.concat({
             name: u.name, distance: distance
         });
