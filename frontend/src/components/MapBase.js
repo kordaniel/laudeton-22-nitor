@@ -7,16 +7,26 @@ import './MapBase.css';
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import activitiesService from "../services/activitiesService";
-import {Point} from "ol/geom";
+import {LineString, Point} from "ol/geom";
 import {fromLonLat, transform} from "ol/proj";
 import AddActivityForm from "./AddActivityForm";
 import ActivityInfo from "./ActivityInfo";
+import {Stroke, Style} from "ol/style";
 
 const MapBase = () => {
-
+    const svg = ""
     const [ map, setMap ] = useState()
     const [ activitiesLayer, setActivitiesLayer ] = useState(new VectorLayer({
         source: new VectorSource()
+    }))
+    const [ pathLayer, setPathLayer ] = useState(new VectorLayer({
+        source: new VectorSource(),
+        style: new Style({
+            stroke : new Stroke({
+                color: '#0000ff',
+                width: 2
+            })
+        })
     }))
     const [ overlay, setOverlay ] = useState(new Overlay({
         element: null,
@@ -53,12 +63,18 @@ const MapBase = () => {
         feature.setId(activity.id);
         console.log(activity.id)
         activitiesLayer.getSource().addFeature(feature);
+        pathLayer.getSource().getFeatures().forEach(feat => feat.getGeometry().appendCoordinate(feature.getGeometry().getCoordinates()));
     }
 
     const updateActivities = () => {
         activitiesService.getActivities().then((activities) => {
             activities.forEach(activity => addActivityToMap(activity));
+            const points = activitiesLayer.getSource().getFeatures().map(feat => feat.getGeometry().getCoordinates());
+            pathLayer.getSource().addFeature(new Feature({
+                geometry: new LineString(points)
+            }))
         })
+
     }
 
     useEffect(() => {
@@ -75,7 +91,7 @@ const MapBase = () => {
                 new TileLayer({
                     source: new OSM(),
                 }),
-                activitiesLayer
+                activitiesLayer, pathLayer
             ]
         });
         initialMap.on('click', handleMapClick)
