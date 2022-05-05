@@ -43,6 +43,21 @@ function getDistance(coordsA, coordsB) {
     return Math.sqrt( (distLat * distLat) + (distLon * distLon) );
 }
 
+function getUsersDistances(activity, users) {
+    const activityName = activity.name;
+    let userDistances = [];
+    users.forEach(u => {
+        const distance = getDistance(u.coordinates, activity.coordinates);
+        userDistances = userDistances.concat({
+            name: u.name, distance: distance
+        });
+    });
+
+    userDistances.sort(function(a, b) { return a.distance - b.distance });
+
+    return { activityName, userDistances };
+}
+
 function getClosestUser(user, allUsers) {
     let closestUserId = '';
     let distance = -1;
@@ -82,6 +97,26 @@ app.get('/activities', async (req, res) => {
     const activities = await fileHandler("./data/activities.json")
     setHeaders(res)
     res.send(activities)
+})
+
+app.get('/activities/:aid', async (req, res) => {
+    const activitiesJson = await fileHandler("./data/activities.json")
+    const activities = JSON.parse(activitiesJson).filter(a => a.id === req.params.aid);
+
+    if (activities.length === 0) {
+        return res.status(400).json({
+            error: "Activity ID not found"
+        });
+    }
+
+    const activity = activities[0];
+    const userJson = await fileHandler("./data/users.json")
+    const users = JSON.parse(userJson).map(u => ({ userId: u.id, name: u.name, coordinates: getCoordinates() }))
+
+    const responseJson = getUsersDistances(activity, users);
+
+    setHeaders(res)
+    res.send(JSON.stringify(responseJson));
 })
 
 app.get('/fromFlights', async (req, res) => {
