@@ -21,14 +21,15 @@ const AddActivityForm = ({ coordinates, close, addActivityToMap }) => {
         }
         activitiesService.addActivity(activity);
         addActivityToMap(activity);
+        setName("")
         close();
     }
 
     return (
         <div>
-            <Form className="mt-4">
+            <Form className="mt-4" onSubmit={handleSubmit}>
                 <Form.Control className="mb-2" placeholder="Name" value={name} onChange={handleInput}/>
-                <Button onClick={handleSubmit}>Add activity</Button>
+                <Button type="submit">Add activity</Button>
             </Form>
         </div>
     )
