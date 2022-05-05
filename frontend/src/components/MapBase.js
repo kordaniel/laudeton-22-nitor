@@ -47,8 +47,8 @@ const MapBase = () => {
         const initialMap = new Map({
             target: mapElement.current,
             view: new View({
-                center: [3617200, 4951081],
-                zoom: 5
+                center: [3245000, 9923000],
+                zoom: 13
             }),
             overlays: [overlay],
             layers: [
